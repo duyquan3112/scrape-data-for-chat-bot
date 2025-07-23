@@ -1,1 +1,5 @@
 python-dotenv
+requests
+html2text
+beautifulsoup4
+openai

@@ -1,1 +1,8 @@
 .env
+__pycache__/
+*.pyc
+data/markdown/
+logs/local_log/
+logs/last_run.log
+data/hashes.json
+.DS_Store

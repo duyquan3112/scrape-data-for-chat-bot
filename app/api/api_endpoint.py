@@ -1,0 +1,1 @@
+GET_ARTICLES_ENDPOINT = "/api/v2/help_center/en-us/articles.json"
