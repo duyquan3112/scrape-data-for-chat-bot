@@ -3,6 +3,13 @@ import os
 
 from openai.types.vector_stores.vector_store_file_batch import VectorStoreFileBatch
 
+def logUpdatedResult(added, updated, skipped):
+    outDir = f"logs/last_update_log_{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.txt"
+    os.makedirs(os.path.dirname(outDir), exist_ok=True)
+    with open(outDir, "a") as f:
+        f.write(f"{datetime.now()} - Added: {added}, Updated: {updated}, Skipped: {skipped}\n")
+    print(f"Updated log saved to {outDir}")
+
 def saveUploadLog(fileBatch: VectorStoreFileBatch):
     outDir = f"logs/local_log/local_log_{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.txt"
     os.makedirs(os.path.dirname(outDir), exist_ok=True)
@@ -17,3 +24,4 @@ def saveUploadLog(fileBatch: VectorStoreFileBatch):
         f.write(f"Upload cancelled: {fileBatch.file_counts.cancelled} files\n")
         f.write(f"Upload in progress: {fileBatch.file_counts.in_progress} files\n")
         f.write(f"Upload total: {fileBatch.file_counts.total} files\n")
+    print(f"Upload log saved to {outDir}")

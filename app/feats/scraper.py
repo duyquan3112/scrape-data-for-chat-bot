@@ -31,9 +31,11 @@ def saveArticlesMarkdown(articles, out_dir='data/markdown'):
 def getArticles():
     params = {"per_page": 100, "sort_by": "position", "sort_order": "desc"}
     try:
+        print(f"Getting articles...")
         url = f"{BASE_URL}{GET_ARTICLES_ENDPOINT}"
         response = requests.get(url, params=params)
         if response.status_code == 200:
+            print(f"Get articles successed")
             print("URL: ", response.url)
             data = response.json()
             return data

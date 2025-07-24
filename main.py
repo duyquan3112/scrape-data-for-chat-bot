@@ -1,30 +1,8 @@
 import os
-import json
-import hashlib
-from datetime import datetime
 from app.feats.scraper import getArticles, saveArticlesMarkdown, slugify
 from app.feats.upload_vector import uploadVector, createFilePaths
-
-hashesPath = "data/hashes.json"
-logPath = "logs/last_run.log"
-
-def getHash(content):
-    return hashlib.md5(content.encode('utf-8')).hexdigest()
-
-def loadHashes(path=hashesPath):
-    if os.path.exists(path):
-        with open(path, 'r') as f:
-            return json.load(f)
-    return {}
-
-def saveHashes(hashes, path=hashesPath):
-    with open(path, 'w') as f:
-        json.dump(hashes, f)
-
-def logResult(added, updated, skipped, logPath=logPath):
-    with open(logPath, "a") as f:
-        f.write(f"{datetime.now()} - Added: {added}, Updated: {updated}, Skipped: {skipped}\n")
-    print(f"Log saved to {logPath}")
+from app.utils.hash import getHash, loadHashes, saveHashes
+from app.utils.save_upload_log import logUpdatedResult
 
 if __name__ == "__main__":
     # Scrape articles
@@ -54,15 +32,27 @@ if __name__ == "__main__":
             skipped += 1
 
     # Save only new/updated articles to markdown
-    if articlesToSave:
+    if len(articlesToSave) > 0:
         saveArticlesMarkdown(articlesToSave)
     else:
         print("No new or updated articles to save.")
 
     # Upload only new/updated markdown files
     filePaths = createFilePaths()
-    slugs = [slugify(f"{article.get('id')} {article.get('name') or article.get('title')}") for article in articlesToSave]
-    deltaFilePaths = [filePath for filePath in filePaths if any(slug in os.path.basename(filePath) for slug in slugs)]
+    slugs = []
+    for article in articlesToSave:
+        rawTitle = f"{article.get('id')} {article.get('name') or article.get('title')}"
+        slug = slugify(rawTitle)
+        slugs.append(slug)
+
+    # Filter out the markdown files that correspond to these slugs
+    deltaFilePaths = []
+    for filePath in filePaths:
+        fileName = os.path.basename(filePath)
+        for slug in slugs:
+            if slug in fileName:
+                deltaFilePaths.append(filePath)
+                break
     if deltaFilePaths:
         uploadVector(deltaFilePaths)
     else:
@@ -72,4 +62,4 @@ if __name__ == "__main__":
     saveHashes(newHashes)
 
     # Log result
-    logResult(added, updated, skipped)
+    logUpdatedResult(added, updated, skipped)
