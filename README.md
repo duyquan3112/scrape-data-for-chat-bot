@@ -46,9 +46,13 @@
 
 ## How to run locally
 
+(on MacOS)
+
 ```bash
 python3 main.py
 ```
+
+(on Windows)
 
 ```cmd
 python main.py
