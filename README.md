@@ -11,9 +11,13 @@
 
 2. **Install dependencies:**
 
+   (on MacOS)
+
    ```bash
    pip3 install -r requirements.txt
    ```
+
+   (on Windows)
 
    ```cmd
    pip install -r requirements.txt
@@ -73,7 +77,6 @@ python main.py
 
 ## Screenshot of Playground Answer
 
-> **Add your screenshot here:**  
 > ![Playground Answer Screenshot](./screenshot/answer_screenshot.png)
 
 ---
@@ -81,5 +84,7 @@ python main.py
 ## Notes
 
 - Chunking Strategy: I leave it on default
+
   > By default, max_chunk_size_tokens is set to 800 and chunk_overlap_tokens is set to 400, meaning every file is indexed by being split up into 800-token chunks, with 400-token overlap between consecutive chunks.
+
   > [https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
