@@ -11,6 +11,8 @@
 
 2. **Install dependencies:**
 
+   Python version: **3.13.5**
+
    (on MacOS)
 
    ```bash
